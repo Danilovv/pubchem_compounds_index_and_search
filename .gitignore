@@ -9,3 +9,5 @@ build
 # Ignore idea project related files
 .idea
 *.iml
+
+lombok.config
