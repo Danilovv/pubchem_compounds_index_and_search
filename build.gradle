@@ -1,0 +1,64 @@
+import java.util.function.Consumer
+import java.util.function.Function
+
+plugins {
+    id 'io.freefair.lombok' version '5.2.1' apply false
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE' apply false
+    id 'org.springframework.boot' version '2.3.4.RELEASE' apply false
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+}
+
+subprojects {
+    group = 'com.danilovv.pubchemcompounds'
+    version = '1.0'
+
+    apply plugin: 'io.freefair.lombok'
+}
+
+//ext {
+//    set('springCloudVersion', 'Hoxton.SR8')
+//}
+
+configure(subprojects.findAll {
+    it.name != 'common' && it.name != 'services'
+}) {
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'org.springframework.boot'
+
+    dependencyManagement {
+        imports {
+            mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR8'
+        }
+    }
+
+    dependencies {
+        implementation project(':common')
+
+        implementation('org.springframework.boot:spring-boot-starter-web')
+        implementation('org.springframework.boot:spring-boot-starter-actuator')
+        implementation('org.springframework.cloud:spring-cloud-kubernetes-discovery')
+        implementation('org.springframework.cloud:spring-cloud-starter-kubernetes-config')
+        implementation('org.springframework.cloud:spring-cloud-starter-netflix-hystrix')
+        implementation('org.springframework.cloud:spring-cloud-starter-kubernetes-ribbon')
+        implementation('org.springframework.cloud:spring-cloud-starter-netflix-ribbon')
+    }
+}
+
+//project(':client') {
+//
+//}
+//
+//project(':service') {
+//    apply plugin: 'java'
+//
+//    dependencies {
+//        implementation project(':common')
+//    }
+//}
