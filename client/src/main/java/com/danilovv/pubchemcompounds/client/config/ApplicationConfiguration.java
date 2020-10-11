@@ -13,11 +13,11 @@ import org.springframework.web.client.RestTemplate;
         @RibbonClient(name = "pubchem-sdf-processing-service"),
         @RibbonClient(name = "pubchem-data-indexing-service"),
         @RibbonClient(name = "pubchem-data-search-service")
-})
+}, defaultConfiguration = DefaultRibbonClientConfiguration.class)
 public class ApplicationConfiguration {
-    @Bean
+    @Bean(name = "loadBalancedRestTemplate")
     @LoadBalanced
-    RestTemplate restTemplate() {
+    RestTemplate loadBalancedRestTemplate() {
         return new RestTemplate();
     }
 }
